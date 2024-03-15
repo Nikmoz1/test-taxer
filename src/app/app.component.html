@@ -1,0 +1,40 @@
+<div class="container">
+  <div class="left-block">
+    <button class="add-button" (click)="switchButton()"> {{!isAdd? 'Додати' : 'Назад'}}</button>
+    <p *ngIf="!certificates.length">Нема жодного сертифікату</p>
+    <ul class="certificate-list" *ngIf="certificates.length">
+      <li (click)="selectCertificate(certificate)" *ngFor="let certificate of certificates"
+        [class.selected]="selectedCertificate === certificate"
+        [class.disabled]="isAdd">{{certificate.commonName}}</li>
+    </ul>
+
+  </div>
+
+  <div class="right-block">
+    <ngx-dropzone *ngIf="isAdd" (change)="addSertificate($event)" class="ngx-dropzone col-xs-12 draggable"
+      [accept]="'.cer'">
+      <ngx-dropzone-label>Перетягніть файл сертифікату сюди або</ngx-dropzone-label>
+      <button type="button" class="small-button">Виберіть через стандартний діалог</button>
+    </ngx-dropzone>
+
+    <div class="card" *ngIf="!isEmptyObject(selectedCertificate)">
+      <div class="header">
+        <h1>{{selectedCertificate.commonName}}</h1>
+      </div>
+      <div class="body">
+        <p>
+          <strong>Common Name:</strong> {{selectedCertificate.commonName}}
+        </p>
+        <p>
+          <strong>Issuer CN:</strong> {{selectedCertificate.issuerName}}
+        </p>
+        <p>
+          <strong>Valid From:</strong> {{selectedCertificate.startDate | date: 'yyyy-MM-dd'}}
+        </p>
+        <p>
+          <strong>Valid To:</strong> {{selectedCertificate.expirationDate | date: 'yyyy-MM-dd'}}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
